@@ -3,11 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ちあきのえいごれんしゅう</title>
+<title>🌟スピーチれんしゅう🌟</title>
+
 <style>
 * {
   box-sizing: border-box;
 }
+
 body {
   margin: 0;
   padding: 20px;
@@ -16,14 +18,17 @@ body {
   color: #333;
   text-align: center;
 }
+
 .container {
   max-width: 700px;
   margin: auto;
 }
+
 h1 {
   font-size: 28px;
   margin-bottom: 20px;
 }
+
 .card {
   background: white;
   border-radius: 20px;
@@ -31,20 +36,24 @@ h1 {
   margin-bottom: 20px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
+
 .number {
   font-size: 18px;
   color: #888;
   margin-bottom: 10px;
 }
+
 .english {
   font-size: 28px;
   font-weight: bold;
   margin: 15px 0;
 }
+
 .japanese {
   font-size: 20px;
   margin: 15px 0 20px;
 }
+
 button {
   border: none;
   border-radius: 14px;
@@ -54,15 +63,18 @@ button {
   cursor: pointer;
   background: #ffe082;
 }
+
 button:active {
   transform: scale(0.97);
 }
+
 .main-button {
   font-size: 24px;
   padding: 18px 35px;
   background: #ffcc66;
   font-weight: bold;
 }
+
 .hint {
   background: #fff3cd;
   border-radius: 15px;
@@ -71,152 +83,236 @@ button:active {
   font-size: 15px;
   line-height: 1.7;
 }
+
 .status {
   margin-top: 15px;
   font-size: 14px;
   color: #777;
 }
+
+.navigation {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+
 </style>
 </head>
+
 <body>
+
 <div class="container">
-  <h1>🌟 ちあきのえいごれんしゅう 🌟</h1>
+
+  <h1>🌟スピーチれんしゅう🌟</h1>
+
   <div class="card">
+
     <div class="number" id="number"></div>
+
     <div class="english" id="english"></div>
+
     <div class="japanese" id="japanese"></div>
+
     <button class="main-button" onclick="playCurrent()">
       きく👂
     </button>
+
     <br>
-    <button onclick="previousSentence()">⬅️ まえ</button>
-    <button onclick="nextSentence()">つぎ ➡️</button>
+
+    <div class="navigation">
+
+      <button onclick="previousSentence()">⬅️ まえ</button>
+
+      <button onclick="goToStart()">はじめにもどる</button>
+
+      <button onclick="nextSentence()">つぎ ➡️</button>
+
+    </div>
+
   </div>
+
   <div>
     <button onclick="playAll()">
       ▶️ さいしょから ぜんぶきく
     </button>
+
     <button onclick="stopAll()">
       ⏹️ ストップ
     </button>
   </div>
+
   <div class="hint">
     💡 <b>つかいかた</b><br>
     「きく👂」をおすと、そのぶんのMP3がながれます。<br>
     「さいしょから ぜんぶきく」をおすと、10このMP3をじゅんばんにじどうさいせいします。
   </div>
+
   <div class="status">
     MP3は、このHTMLとおなじばしょにある
     <b>audio</b> フォルダにいれてください。
   </div>
+
 </div>
+
 <script>
+
 const sentences = [
+
   {
     english: "Hello, everyone!",
     japanese: "みなさん、こんにちは！",
     mp3: "01.Hello, everyone!.mp3"
   },
+
   {
     english: "My name is Chiaki.",
     japanese: "わたしのなまえは ちあきです。",
     mp3: "02.My name is Chiaki..mp3"
   },
+
   {
     english: "I'm five years old.",
     japanese: "わたしは5さいです。",
     mp3: "03.I'm five years old..mp3"
   },
+
   {
     english: "I like gold and silver.",
     japanese: "わたしはきんとぎんがすきです。",
     mp3: "04.I like gold and silver..mp3"
   },
+
   {
     english: "I can draw a picture.",
     japanese: "わたしはえをかくことができます。",
     mp3: "05.I can draw a picture..mp3"
   },
+
   {
     english: "Look at this!",
     japanese: "これをみて！",
     mp3: "06.Look at this!.mp3"
   },
+
   {
     english: "It's a penguin.",
     japanese: "ぺんぎんです。",
     mp3: "07.It's a penguin..mp3"
   },
+
   {
     english: "It's small.",
     japanese: "ちいさいです。",
     mp3: "08.It's small..mp3"
   },
+
   {
     english: "What animal do you like?",
     japanese: "どんなどうぶつがすきですか？",
     mp3: "09.What animal do you like.mp3"
   },
+
   {
     english: "Thank you for listening.",
     japanese: "きいてくれてありがとう。",
     mp3: "10.Thank you for listening..mp3"
   }
+
 ];
+
 let current = 0;
 let audio = null;
 let playingAll = false;
+
 function showSentence() {
+
   document.getElementById("number").textContent =
     (current + 1) + " / " + sentences.length;
+
   document.getElementById("english").textContent =
     sentences[current].english;
+
   document.getElementById("japanese").textContent =
     sentences[current].japanese;
 }
+
 function playCurrent() {
+
   stopAudio();
+
   audio = new Audio(
     "audio/" + encodeURIComponent(sentences[current].mp3)
   );
+
   audio.play().catch(function() {
     alert("MP3がみつかりません。audioフォルダをかくにんしてください。");
   });
 }
+
 function nextSentence() {
+
   if (current < sentences.length - 1) {
     current++;
     showSentence();
   }
+
 }
+
 function previousSentence() {
+
   if (current > 0) {
     current--;
     showSentence();
   }
+
 }
-function playAll() {
+
+function goToStart() {
+
   stopAudio();
+
+  current = 0;
+  playingAll = false;
+
+  showSentence();
+
+}
+
+function playAll() {
+
+  stopAudio();
+
   current = 0;
   playingAll = true;
+
   showSentence();
   playNextAudio();
+
 }
+
 function playNextAudio() {
+
   if (!playingAll) {
     return;
   }
+
   if (current >= sentences.length) {
     playingAll = false;
     current = sentences.length - 1;
     showSentence();
     return;
   }
+
   audio = new Audio(
     "audio/" + encodeURIComponent(sentences[current].mp3)
   );
+
   audio.onended = function() {
+
     current++;
+
     if (current < sentences.length) {
       showSentence();
       playNextAudio();
@@ -225,24 +321,36 @@ function playNextAudio() {
       current = sentences.length - 1;
       showSentence();
     }
+
   };
+
   audio.play().catch(function() {
     playingAll = false;
     alert("MP3がみつかりません。audioフォルダをかくにんしてください。");
   });
+
 }
+
 function stopAudio() {
+
   if (audio) {
     audio.pause();
     audio.currentTime = 0;
     audio = null;
   }
+
 }
+
 function stopAll() {
+
   playingAll = false;
   stopAudio();
+
 }
+
 showSentence();
+
 </script>
+
 </body>
 </html>

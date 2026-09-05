@@ -3,283 +3,245 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ちあきの英語れんしゅう</title>
+<title>ちあきのえいごれんしゅう</title>
 <style>
-  * { box-sizing: border-box; }
-  body {
-    margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN",
-                 "Yu Gothic", Meiryo, sans-serif;
-    background: #f5f7fb;
-    color: #222;
-  }
-  .wrap {
-    max-width: 760px;
-    margin: 0 auto;
-    padding: 20px 16px 40px;
-  }
-  h1 {
-    text-align: center;
-    font-size: 30px;
-    margin: 8px 0 18px;
-  }
-  .top-buttons {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    margin-bottom: 18px;
-  }
-  button {
-    border: 0;
-    border-radius: 18px;
-    padding: 16px 12px;
-    font-size: 18px;
-    font-weight: 700;
-    cursor: pointer;
-    background: white;
-    box-shadow: 0 3px 10px rgba(0,0,0,.10);
-  }
-  button:active { transform: scale(.98); }
-  .all { background: #222; color: white; }
-  .stop { background: #fff; color: #c62828; }
-  .progress {
-    text-align: center;
-    font-weight: 700;
-    margin: 10px 0;
-    font-size: 18px;
-  }
-  .card {
-    background: white;
-    border-radius: 26px;
-    padding: 26px 20px;
-    box-shadow: 0 5px 18px rgba(0,0,0,.10);
-  }
-  .number {
-    text-align: center;
-    font-size: 18px;
-    font-weight: 700;
-    margin-bottom: 18px;
-  }
-  .jp {
-    font-size: 23px;
-    line-height: 1.6;
-    text-align: center;
-    margin-bottom: 18px;
-  }
-  .en {
-    font-size: 30px;
-    line-height: 1.45;
-    text-align: center;
-    font-weight: 700;
-    margin-bottom: 22px;
-  }
-  .listen {
-    width: 100%;
-    font-size: 24px;
-    padding: 20px;
-    background: #e8f4ff;
-  }
-  .nav {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    margin-top: 16px;
-  }
-  .hint {
-    margin-top: 18px;
-    padding: 14px;
-    background: #fff8df;
-    border-radius: 14px;
-    font-size: 14px;
-    line-height: 1.6;
-  }
-  .file-status {
-    margin-top: 18px;
-    font-size: 13px;
-    color: #666;
-    text-align: center;
-  }
-  @media (max-width: 520px) {
-    h1 { font-size: 26px; }
-    .en { font-size: 26px; }
-    .jp { font-size: 20px; }
-    .top-buttons { grid-template-columns: 1fr; }
-  }
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  padding: 20px;
+  font-family: sans-serif;
+  background: #fff8e7;
+  color: #333;
+  text-align: center;
+}
+.container {
+  max-width: 700px;
+  margin: auto;
+}
+h1 {
+  font-size: 28px;
+  margin-bottom: 20px;
+}
+.card {
+  background: white;
+  border-radius: 20px;
+  padding: 25px 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.number {
+  font-size: 18px;
+  color: #888;
+  margin-bottom: 10px;
+}
+.english {
+  font-size: 28px;
+  font-weight: bold;
+  margin: 15px 0;
+}
+.japanese {
+  font-size: 20px;
+  margin: 15px 0 20px;
+}
+button {
+  border: none;
+  border-radius: 14px;
+  padding: 12px 18px;
+  margin: 5px;
+  font-size: 17px;
+  cursor: pointer;
+  background: #ffe082;
+}
+button:active {
+  transform: scale(0.97);
+}
+.main-button {
+  font-size: 24px;
+  padding: 18px 35px;
+  background: #ffcc66;
+  font-weight: bold;
+}
+.hint {
+  background: #fff3cd;
+  border-radius: 15px;
+  padding: 15px;
+  margin-top: 20px;
+  font-size: 15px;
+  line-height: 1.7;
+}
+.status {
+  margin-top: 15px;
+  font-size: 14px;
+  color: #777;
+}
 </style>
 </head>
-
 <body>
-<div class="wrap">
-  <h1>🌟 ちあきの英語れんしゅう 🌟</h1>
-
-  <div class="top-buttons">
-    <button class="all" onclick="playAll()">▶️ さいしょから ぜんぶ聞く</button>
-    <button class="stop" onclick="stopAudio()">⏹️ ストップ</button>
-  </div>
-
-  <div class="progress" id="progress">1 / 10</div>
-
+<div class="container">
+  <h1>🌟 ちあきのえいごれんしゅう 🌟</h1>
   <div class="card">
-    <div class="number" id="number">①</div>
-    <div class="jp" id="jp">みなさん、こんにちは！</div>
-    <div class="en" id="en">Hello, everyone!</div>
-
-    <button class="listen" onclick="playCurrent()">🔊 英語を聞く</button>
-
-    <div class="nav">
-      <button onclick="prevSentence()">⬅️ まえ</button>
-      <button onclick="nextSentence()">つぎ ➡️</button>
-    </div>
+    <div class="number" id="number"></div>
+    <div class="english" id="english"></div>
+    <div class="japanese" id="japanese"></div>
+    <button class="main-button" onclick="playCurrent()">
+      きく👂
+    </button>
+    <br>
+    <button onclick="previousSentence()">⬅️ まえ</button>
+    <button onclick="nextSentence()">つぎ ➡️</button>
   </div>
-
+  <div>
+    <button onclick="playAll()">
+      ▶️ さいしょから ぜんぶきく
+    </button>
+    <button onclick="stopAll()">
+      ⏹️ ストップ
+    </button>
+  </div>
   <div class="hint">
     💡 <b>つかいかた</b><br>
-    「英語を聞く」を押すと、その文のMP3が流れます。<br>
-    「さいしょから ぜんぶ聞く」を押すと、10個のMP3を順番に自動再生します。
+    「きく👂」をおすと、そのぶんのMP3がながれます。<br>
+    「さいしょから ぜんぶきく」をおすと、10このMP3をじゅんばんにじどうさいせいします。
   </div>
-
-  <div class="file-status">
-    MP3は、このHTMLと同じ場所にある <b>audio</b> フォルダに入れてください。
+  <div class="status">
+    MP3は、このHTMLとおなじばしょにある
+    <b>audio</b> フォルダにいれてください。
   </div>
-
-  <audio id="player" preload="auto"></audio>
 </div>
-
 <script>
-// ============================================================
-// ★ MP3ファイルはここで指定しています ★
-//
-// audio フォルダの中に、下のファイル名を「一文字も変えず」に
-// 入れてください。スペース・ピリオド・カンマ・'・! もそのままです。
-// ============================================================
-
 const sentences = [
   {
-    jp: "みなさん、こんにちは！",
-    en: "Hello, everyone!",
+    english: "Hello, everyone!",
+    japanese: "みなさん、こんにちは！",
     mp3: "01.Hello, everyone!.mp3"
   },
   {
-    jp: "わたしの名前は ちあきです。",
-    en: "My name is Chiaki.",
+    english: "My name is Chiaki.",
+    japanese: "わたしのなまえは ちあきです。",
     mp3: "02.My name is Chiaki..mp3"
   },
   {
-    jp: "わたしは5さいです。",
-    en: "I'm five years old.",
+    english: "I'm five years old.",
+    japanese: "わたしは5さいです。",
     mp3: "03.I'm five years old..mp3"
   },
   {
-    jp: "わたしは金と銀が好きです。",
-    en: "I like gold and silver.",
+    english: "I like gold and silver.",
+    japanese: "わたしはきんとぎんがすきです。",
     mp3: "04.I like gold and silver..mp3"
   },
   {
-    jp: "わたしは絵をかくことができます。",
-    en: "I can draw a picture.",
+    english: "I can draw a picture.",
+    japanese: "わたしはえをかくことができます。",
     mp3: "05.I can draw a picture..mp3"
   },
   {
-    jp: "これを見て！",
-    en: "Look at this!",
+    english: "Look at this!",
+    japanese: "これをみて！",
     mp3: "06.Look at this!.mp3"
   },
   {
-    jp: "ペンギンです。",
-    en: "It's a penguin.",
+    english: "It's a penguin.",
+    japanese: "ぺんぎんです。",
     mp3: "07.It's a penguin..mp3"
   },
   {
-    jp: "小さいです。",
-    en: "It's small.",
+    english: "It's small.",
+    japanese: "ちいさいです。",
     mp3: "08.It's small..mp3"
   },
   {
-    jp: "どんな動物が好きですか？",
-    en: "What animal do you like?",
+    english: "What animal do you like?",
+    japanese: "どんなどうぶつがすきですか？",
     mp3: "09.What animal do you like.mp3"
   },
   {
-    jp: "聞いてくれてありがとう。",
-    en: "Thank you for listening.",
+    english: "Thank you for listening.",
+    japanese: "きいてくれてありがとう。",
     mp3: "10.Thank you for listening..mp3"
   }
 ];
-
 let current = 0;
+let audio = null;
 let playingAll = false;
-
-const player = document.getElementById("player");
-
 function showSentence() {
-  const s = sentences[current];
-  document.getElementById("progress").textContent =
-    `${current + 1} / ${sentences.length}`;
   document.getElementById("number").textContent =
-    ["①","②","③","④","⑤","⑥","⑦","⑧","⑨","⑩"][current];
-  document.getElementById("jp").textContent = s.jp;
-  document.getElementById("en").textContent = s.en;
+    (current + 1) + " / " + sentences.length;
+  document.getElementById("english").textContent =
+    sentences[current].english;
+  document.getElementById("japanese").textContent =
+    sentences[current].japanese;
 }
-
 function playCurrent() {
-  playingAll = false;
-  player.src = "audio/" + encodeURIComponent(sentences[current].mp3);
-  player.play().catch(() => {
-    alert("MP3ファイルが見つからないか、再生できません。\nファイル名とaudioフォルダを確認してください。");
-  });
-}
-
-function playAll() {
-  playingAll = true;
-  current = 0;
-  showSentence();
-  playCurrentForAll();
-}
-
-function playCurrentForAll() {
-  const filename = sentences[current].mp3;
-  player.src = "audio/" + encodeURIComponent(filename);
-  player.play().catch(() => {
-    playingAll = false;
-    alert("MP3ファイルが見つからないか、再生できません。\nファイル名とaudioフォルダを確認してください。");
-  });
-}
-
-function stopAudio() {
-  playingAll = false;
-  player.pause();
-  player.currentTime = 0;
-}
-
-function nextSentence() {
   stopAudio();
+  audio = new Audio(
+    "audio/" + encodeURIComponent(sentences[current].mp3)
+  );
+  audio.play().catch(function() {
+    alert("MP3がみつかりません。audioフォルダをかくにんしてください。");
+  });
+}
+function nextSentence() {
   if (current < sentences.length - 1) {
     current++;
     showSentence();
   }
 }
-
-function prevSentence() {
-  stopAudio();
+function previousSentence() {
   if (current > 0) {
     current--;
     showSentence();
   }
 }
-
-// MP3が終わったら、通し再生中なら次の文へ
-player.addEventListener("ended", () => {
-  if (!playingAll) return;
-
-  if (current < sentences.length - 1) {
-    current++;
-    showSentence();
-    playCurrentForAll();
-  } else {
-    playingAll = false;
+function playAll() {
+  stopAudio();
+  current = 0;
+  playingAll = true;
+  showSentence();
+  playNextAudio();
+}
+function playNextAudio() {
+  if (!playingAll) {
+    return;
   }
-});
-
+  if (current >= sentences.length) {
+    playingAll = false;
+    current = sentences.length - 1;
+    showSentence();
+    return;
+  }
+  audio = new Audio(
+    "audio/" + encodeURIComponent(sentences[current].mp3)
+  );
+  audio.onended = function() {
+    current++;
+    if (current < sentences.length) {
+      showSentence();
+      playNextAudio();
+    } else {
+      playingAll = false;
+      current = sentences.length - 1;
+      showSentence();
+    }
+  };
+  audio.play().catch(function() {
+    playingAll = false;
+    alert("MP3がみつかりません。audioフォルダをかくにんしてください。");
+  });
+}
+function stopAudio() {
+  if (audio) {
+    audio.pause();
+    audio.currentTime = 0;
+    audio = null;
+  }
+}
+function stopAll() {
+  playingAll = false;
+  stopAudio();
+}
 showSentence();
 </script>
 </body>

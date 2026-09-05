@@ -104,6 +104,45 @@ button:active {
   flex-wrap: wrap;
 }
 
+.sentence-list {
+  background: white;
+  border-radius: 20px;
+  padding: 15px;
+  margin-top: 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  text-align: left;
+}
+
+.sentence-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 4px;
+  border-bottom: 1px solid #eee;
+}
+
+.sentence-item:last-child {
+  border-bottom: none;
+}
+
+.sentence-text {
+  flex: 1;
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.sentence-number {
+  font-weight: bold;
+  min-width: 22px;
+}
+
+.small-button {
+  font-size: 13px;
+  padding: 7px 10px;
+  margin: 0;
+  white-space: nowrap;
+}
+
 </style>
 </head>
 
@@ -155,12 +194,17 @@ button:active {
 
   </div>
 
+
+  <div class="sentence-list" id="sentenceList"></div>
+
+
   <div class="hint">
     💡 <b>つかいかた</b><br>
     「きく👂」をおすと、そのぶんのMP3がながれます。<br>
     「さいしょから ぜんぶきく」をおすと、10このMP3をじゅんばんに1かいさいせいします。<br>
     「エンドレス」をおすと、10このMP3をなんどもくりかえします。<br>
-    エンドレスちゅうは、ボタンのいろがこくなります。
+    エンドレスちゅうは、ボタンのいろがこくなります。<br>
+    したのいちらんから、すきなぶんだけきくこともできます。
   </div>
 
   <div class="status">
@@ -169,6 +213,7 @@ button:active {
   </div>
 
 </div>
+
 
 <script>
 
@@ -236,10 +281,12 @@ const sentences = [
 
 ];
 
+
 let current = 0;
 let audio = null;
 let playingAll = false;
 let endless = false;
+
 
 function showSentence() {
 
@@ -253,6 +300,7 @@ function showSentence() {
     sentences[current].japanese;
 }
 
+
 function setEndlessButton(active) {
 
   const button = document.getElementById("endlessButton");
@@ -264,6 +312,7 @@ function setEndlessButton(active) {
   }
 
 }
+
 
 function playCurrent() {
 
@@ -281,7 +330,33 @@ function playCurrent() {
   audio.play().catch(function() {
     alert("MP3がみつかりません。audioフォルダをかくにんしてください。");
   });
+
 }
+
+
+function playSentence(index) {
+
+  stopAudio();
+
+  current = index;
+
+  playingAll = false;
+  endless = false;
+
+  setEndlessButton(false);
+
+  showSentence();
+
+  audio = new Audio(
+    "audio/" + encodeURIComponent(sentences[current].mp3)
+  );
+
+  audio.play().catch(function() {
+    alert("MP3がみつかりません。audioフォルダをかくにんしてください。");
+  });
+
+}
+
 
 function nextSentence() {
 
@@ -292,6 +367,7 @@ function nextSentence() {
 
 }
 
+
 function previousSentence() {
 
   if (current > 0) {
@@ -300,6 +376,7 @@ function previousSentence() {
   }
 
 }
+
 
 function goToStart() {
 
@@ -314,6 +391,7 @@ function goToStart() {
   showSentence();
 
 }
+
 
 function playAll() {
 
@@ -330,6 +408,7 @@ function playAll() {
 
 }
 
+
 function playEndless() {
 
   stopAudio();
@@ -345,6 +424,7 @@ function playEndless() {
 
 }
 
+
 function playNextAudio() {
 
   if (!playingAll) {
@@ -354,26 +434,33 @@ function playNextAudio() {
   if (current >= sentences.length) {
 
     if (endless) {
+
       current = 0;
       showSentence();
       playNextAudio();
+
     } else {
+
       playingAll = false;
       current = sentences.length - 1;
       showSentence();
       setEndlessButton(false);
+
     }
 
     return;
   }
 
+
   audio = new Audio(
     "audio/" + encodeURIComponent(sentences[current].mp3)
   );
 
+
   audio.onended = function() {
 
     current++;
+
 
     if (current < sentences.length) {
 
@@ -400,25 +487,33 @@ function playNextAudio() {
 
   };
 
+
   audio.play().catch(function() {
+
     playingAll = false;
     endless = false;
+
     setEndlessButton(false);
 
     alert("MP3がみつかりません。audioフォルダをかくにんしてください。");
+
   });
 
 }
 
+
 function stopAudio() {
 
   if (audio) {
+
     audio.pause();
     audio.currentTime = 0;
     audio = null;
+
   }
 
 }
+
 
 function stopAll() {
 
@@ -431,7 +526,48 @@ function stopAll() {
 
 }
 
+
+function createSentenceList() {
+
+  const list = document.getElementById("sentenceList");
+
+  sentences.forEach(function(sentence, index) {
+
+    const item = document.createElement("div");
+    item.className = "sentence-item";
+
+    const number = document.createElement("div");
+    number.className = "sentence-number";
+    number.textContent = (index + 1) + ".";
+
+    const text = document.createElement("div");
+    text.className = "sentence-text";
+
+    text.innerHTML =
+      "<b>" + sentence.english + "</b><br>" +
+      sentence.japanese;
+
+    const button = document.createElement("button");
+    button.className = "small-button";
+    button.textContent = "きく🔊";
+
+    button.onclick = function() {
+      playSentence(index);
+    };
+
+    item.appendChild(number);
+    item.appendChild(text);
+    item.appendChild(button);
+
+    list.appendChild(item);
+
+  });
+
+}
+
+
 showSentence();
+createSentenceList();
 
 </script>
 

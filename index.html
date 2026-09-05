@@ -138,6 +138,10 @@ button:active {
       ▶️ さいしょから ぜんぶきく
     </button>
 
+    <button onclick="playEndless()">
+      🔁 エンドレス
+    </button>
+
     <button onclick="stopAll()">
       ⏹️ ストップ
     </button>
@@ -146,7 +150,8 @@ button:active {
   <div class="hint">
     💡 <b>つかいかた</b><br>
     「きく👂」をおすと、そのぶんのMP3がながれます。<br>
-    「さいしょから ぜんぶきく」をおすと、10このMP3をじゅんばんにじどうさいせいします。
+    「さいしょから ぜんぶきく」をおすと、10このMP3をじゅんばんに1かいさいせいします。<br>
+    「エンドレス」をおすと、10このMP3をなんどもくりかえします。
   </div>
 
   <div class="status">
@@ -225,6 +230,7 @@ const sentences = [
 let current = 0;
 let audio = null;
 let playingAll = false;
+let endless = false;
 
 function showSentence() {
 
@@ -241,6 +247,8 @@ function showSentence() {
 function playCurrent() {
 
   stopAudio();
+  playingAll = false;
+  endless = false;
 
   audio = new Audio(
     "audio/" + encodeURIComponent(sentences[current].mp3)
@@ -275,6 +283,7 @@ function goToStart() {
 
   current = 0;
   playingAll = false;
+  endless = false;
 
   showSentence();
 
@@ -286,6 +295,20 @@ function playAll() {
 
   current = 0;
   playingAll = true;
+  endless = false;
+
+  showSentence();
+  playNextAudio();
+
+}
+
+function playEndless() {
+
+  stopAudio();
+
+  current = 0;
+  playingAll = true;
+  endless = true;
 
   showSentence();
   playNextAudio();
@@ -299,9 +322,17 @@ function playNextAudio() {
   }
 
   if (current >= sentences.length) {
-    playingAll = false;
-    current = sentences.length - 1;
-    showSentence();
+
+    if (endless) {
+      current = 0;
+      showSentence();
+      playNextAudio();
+    } else {
+      playingAll = false;
+      current = sentences.length - 1;
+      showSentence();
+    }
+
     return;
   }
 
@@ -314,18 +345,33 @@ function playNextAudio() {
     current++;
 
     if (current < sentences.length) {
+
       showSentence();
       playNextAudio();
+
     } else {
-      playingAll = false;
-      current = sentences.length - 1;
-      showSentence();
+
+      if (endless) {
+
+        current = 0;
+        showSentence();
+        playNextAudio();
+
+      } else {
+
+        playingAll = false;
+        current = sentences.length - 1;
+        showSentence();
+
+      }
+
     }
 
   };
 
   audio.play().catch(function() {
     playingAll = false;
+    endless = false;
     alert("MP3がみつかりません。audioフォルダをかくにんしてください。");
   });
 
@@ -344,6 +390,7 @@ function stopAudio() {
 function stopAll() {
 
   playingAll = false;
+  endless = false;
   stopAudio();
 
 }
